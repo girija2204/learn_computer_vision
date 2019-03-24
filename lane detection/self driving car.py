@@ -191,7 +191,7 @@ epsilon_min = 0.01
 # to decay
 epsilon_decay = 0.995
 # Number of times we want to train the algorithm
-epochs = 100
+epochs = 10
 # We want to store our data for replay/so our model can remember
 memory = []
 # The max amount of stuff we want to remember
