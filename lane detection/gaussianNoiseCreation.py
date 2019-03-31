@@ -6,15 +6,25 @@ from scipy import stats
 
 image = cv2.imread("lenna.png")
 
-image_float = img_as_float(image) # range of a floating point image is 0.0 to 1.0
+def getGaussianNoise(shape):
+    mean = 0.0
+    variance = 0.01
+    noise = np.random.normal(mean,variance**0.5,shape)
+    return noise
 
-mean = 0.0
-variance = 0.01
-noise = np.random.normal(mean,variance**0.5,image.shape)
-noisy_image = image_float + noise
+def getPoissonNoise(shape):
+    pass
 
-noisy_image = np.clip(noisy_image,0.0,1.0)
-noisy_image = img_as_ubyte(noisy_image)
+def addNoiseToData(image,noise):
+    image_float = img_as_float(image)  # range of a floating point image is 0.0 to 1.0
+    noisy_image = image_float + noise
+    noisy_image = np.clip(noisy_image, 0.0, 1.0)
+    noisy_image = img_as_ubyte(noisy_image)
+    return noisy_image
+
+noise = getGaussianNoise(image.shape)
+noisy_image = addNoiseToData(image,noise)
+
 
 plt.style.use('seaborn') # pretty matplotlib plots
 plt.rcParams['figure.figsize'] = (12, 8)
@@ -53,4 +63,8 @@ ax3.title.set_text("Noisy Image")
 ax3.set_xlabel("pixels range 0-255")
 ax3.set_ylabel("Frequency of the pixels")
 
+plt.show()
+
+smooth_image = cv2.GaussianBlur(noisy_image,(15,15),sigmaX=0,sigmaY=0)
+plt.imshow(cv2.cvtColor(smooth_image,cv2.COLOR_BGR2RGB))
 plt.show()
