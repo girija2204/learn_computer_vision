@@ -1,30 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
-from skimage import img_as_float, img_as_ubyte
-from scipy import stats
+from gaussianNoise import addGaussianNoiseToImg
 
 image = cv2.imread("lenna.png")
 
-def getGaussianNoise(shape):
-    mean = 0.0
-    variance = 0.01
-    noise = np.random.normal(mean,variance**0.5,shape)
-    return noise
-
-def getPoissonNoise(shape):
-    pass
-
-def addNoiseToData(image,noise):
-    image_float = img_as_float(image)  # range of a floating point image is 0.0 to 1.0
-    noisy_image = image_float + noise
-    noisy_image = np.clip(noisy_image, 0.0, 1.0)
-    noisy_image = img_as_ubyte(noisy_image)
-    return noisy_image
-
-noise = getGaussianNoise(image.shape)
-noisy_image = addNoiseToData(image,noise)
-
+noise, noisy_image = addGaussianNoiseToImg(image)
 
 plt.style.use('seaborn') # pretty matplotlib plots
 plt.rcParams['figure.figsize'] = (12, 8)
